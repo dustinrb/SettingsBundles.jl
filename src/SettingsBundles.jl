@@ -4,7 +4,7 @@ export
     # Types
     SettingsBundle, SettingsYAMLFile, SettingsJSONFile,
     # Functions
-    add!
+    add!, flatten
 
 include("sources/SettingsYAMLFile.jl")
 include("sources/SettingsJSONFile.jl")
@@ -20,6 +20,7 @@ type SettingsBundle
     sources::Array{Associative}
 
     SettingsBundle() = new(Array(Associative, 0))
+    SettingsBundle(sources...) = new(reverse([i for i in sources])) # Make sure it's not a Tuple
 end
 
 """
@@ -27,6 +28,17 @@ Addes a settings source to a SettingsBundle. The most recently
 added source is the highest priority
 """
 add!(item::SettingsBundle, source::Associative) = insert!(item.sources, 1, source)
+
+"""
+Takes and existing settings objects, and produces a dictionary
+"""
+function flatten(item::SettingsBundle)
+    flat = Dict()
+    for key in keys(item)
+        flat[key] = item[key]
+    end
+    return flat
+end
 
 """
 getindex for a Settings object involve going through the `sources`
