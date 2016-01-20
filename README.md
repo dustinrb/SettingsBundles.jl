@@ -6,7 +6,7 @@ Settings bundles provides a unified key-value store for querying information fro
 
 ## Installation
 
-Simply run `Pkg.add(“SettingsBundles”)` in the Julia REPL
+Simply run `Pkg.clone(“https://github.com/dustinrb/SettingsBundles.jl.git”)` in the Julia REPL
 
 ## Usage
 
