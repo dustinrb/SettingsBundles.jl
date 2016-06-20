@@ -3,7 +3,7 @@ using JSON
 """
 Reads data in from JSON function and treat it like a read only dictionary
 """
-type SettingsJSONFile <: Associative
+type SettingsJSONFile <: SettingsSource
     data::Dict
     filename::AbstractString
     watched::Bool

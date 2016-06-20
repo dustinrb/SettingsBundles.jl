@@ -1,6 +1,6 @@
 using YAML
 
-type SettingsYAMLFile <: Associative
+type SettingsYAMLFile <: SettingsSource
     data::Dict
     filename::AbstractString
     watched::Bool

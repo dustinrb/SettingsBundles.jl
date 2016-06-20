@@ -6,6 +6,7 @@ export
     # Functions
     add!, flatten
 
+abstract SettingsSource <: Associative
 include("sources/SettingsYAMLFile.jl")
 include("sources/SettingsJSONFile.jl")
 
@@ -16,11 +17,21 @@ Also, it only accepts symbols as inputs to make searching
 for things more uniform. So I guess I should say sources
 must be Associative objects with symbol based keys.
 """
-type SettingsBundle
+type SettingsBundle <: SettingsSource
     sources::Array{Associative}
 
     SettingsBundle() = new(Array(Associative, 0))
     SettingsBundle(sources...) = new(reverse([i for i in sources])) # Make sure it's not a Tuple
+end
+
+Base.showdict(s::SettingsSource; kw...) = Base.showdict(STDOUT, s; kw...)
+function Base.showdict(out::IO, s::SettingsSource; limit::Bool=false, compact::Bool=false)
+    k = keys(s)
+    print_with_color(:bold, out, "$(typeof(s)) with $(length(k)) sources")
+    length(k) == 0 ? print_with_color(:bold, out, "\n") : print_with_color(:bold, out, ":\n")
+    for key in k
+        print_with_color(:bold, out, "  $(key)\t=> $(s[key])\n")
+    end
 end
 
 """
